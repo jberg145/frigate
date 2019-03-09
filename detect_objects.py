@@ -25,6 +25,8 @@ RTSP_URL = os.getenv('RTSP_URL')
 
 MQTT_HOST = os.getenv('MQTT_HOST')
 MQTT_TOPIC_PREFIX = os.getenv('MQTT_TOPIC_PREFIX')
+MQTT_PW = os.getenv('MQTT_PW')
+MQTT_USER = os.getenv('MQTT_USER')
 
 # REGIONS = "350,0,300,50:400,350,250,50:400,750,250,50"
 # REGIONS = "400,350,250,50"
@@ -144,6 +146,7 @@ def main():
         client.publish(MQTT_TOPIC_PREFIX+'/available', 'online', retain=True)
     client = mqtt.Client()
     client.on_connect = on_connect
+    client.username_pw_set(MQTT_USER, MQTT_PW)
     client.will_set(MQTT_TOPIC_PREFIX+'/available', payload='offline', qos=1, retain=True)
     client.connect(MQTT_HOST, 1883, 60)
     client.loop_start()
